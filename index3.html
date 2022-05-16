@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #headings{
+            display: flex;
+            flex-direction: row;
+            margin-top: 0%;
+            border: 1px solid black;
+            background-color: orange;
+        }
+        #headings>div{
+            margin: 10px;
+            
+        }
+        #headings>div>a{
+            color: beige;
+            text-decoration: none;
+
+        }
+        body {
+    color: aliceblue;
+    
+}
+
+.header {
+    display: flex;
+   
+}
+
+.header input {
+    height: 35px;
+    width: 350px;
+    align-self: center;
+    padding-left: 15px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    margin-right: 100px;
+}
+#body {
+    display: flex;
+    /* justify-content: space-between; */
+}
+.box {
+    width: 347px;
+    height: 300px;
+    background-color: rgb(50, 50, 63);
+    padding: 10px;
+    margin-right: 100px;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+#box3 {
+    border: 1px solid #202124;
+    padding: 5px;
+}
+.box3 p {
+    width: 300px;
+    border: 2px solid #202124;
+    height: auto;
+}
+
+    </style>
+    <title>Search Page</title>
+</head>
+<body>
+    <div id="headings">
+        <div class="links"><a href="./index1.html">Home</a></div>
+        <div class="links"><a href="./index2.html">Individual Brewery Page</a></div>
+        <div class="links"><a href="./index3.html">Search Page</a></div>
+    </div>
+    <div class="header">
+        <div class="first"></div>
+        <div class="second">
+            <input type="text" id="search" placeholder="search">
+            <button id="search" onclick="debounce(getdata, 500)">CLICK ME!</button>
+        </div>
+        
+    </div>
+    <div id="body"></div>
+</body>
+</html>
+<script>
+     let timeout;
+    function debounce(func, delay) {
+        if (timeout) {
+            clearTimeout(timeout)
+        }
+        timeout = setTimeout(function () {
+            func()
+        }, delay)
+    }
+    let url = `https://api.openbrewerydb.org/breweries?by_name=${name}&per_page=3`;
+    async function getdata() {
+        try {
+            let name = document.getElementById("search").value;
+            console.log(name)
+            const res = await fetch(url);
+            const data = await res.json();
+            var Data = data
+            document.getElementById("box2").innerHTML = ``
+            console.log(Data)
+            displaydata(Data);
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    let movielement = document.getElementById("body")
+           var box1 = document.createElement("div")
+           var box2 = document.createElement("div")
+           
+           movielement.append(box1)
+           movielement.append(box2)
+           box2.className = 'box'
+           box2.id = 'box2'
+
+    function displaydata(data) {
+        data.forEach((alldata) => {
+            var box3 = document.createElement("div")            
+           box2.append(box3)
+           box3.id = 'box3'
+           let p1 = document.createElement("p")
+           p1.textContent = `name:-${alldata.name}`
+           var p2 = document.createElement("p")
+           p2.textContent = `brewery_type:-${alldata.brewery_type}`
+           let p3 = document.createElement("p")
+           p3.textContent = `city:-${alldata.city}`
+           let p4 = document.createElement("p")
+           p4.textContent = `state:-${alldata.state}`
+           box3.append(p1);
+           box3.append(p2);
+           box3.append(p3);
+           box3.append(p4);
+        });
+
+    }
+</script>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        #headings{
+            display: flex;
+            flex-direction: row;
+            margin-top: 0%;
+            border: 1px solid black;
+            background-color: orange;
+        }
+        #headings>div{
+            margin: 10px;
+            
+        }
+        #headings>div>a{
+            color: beige;
+            text-decoration: none;
+
+        }
+ #container1 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-right: 5%;
+
+  grid-gap: 20px;
+}
+
+#container1 > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cecece;
+}
+
+
+    </style>
+    <title>Homepage</title>
+</head>
+<body>
+    <!-- navbar starts -->
+    <div id="headings">
+        <div class="links"><a href="./index1.html">Home</a></div>
+        <div class="links"><a href="./index2.html">Individual Brewery Page</a></div>
+        <div class="links"><a href="./index3.html">Search Page</a></div>
+    </div>
+    <!-- navbar ends -->
+
+    <div id="container1"></div>
+</body>
+</html>
+<script>
+    let container1 = document.getElementById("container1");
+    let url = `https://api.openbrewerydb.org/breweries`;
+    
+    async function getData(){
+        try {
+            let res = await fetch(url);
+           let data =  await res.json();
+        console.log(data);
+        displayData(data);
+        } catch (err) {
+            console.log(err);
+            
+        }
+      
+    }
+    getData();
+//     address_2: null
+// address_3: null
+// brewery_type: "planning"
+// city: "Fayetteville"
+// country: "United States"
+// county_province: null
+// created_at: "2021-10-23T02:24:55.243Z"
+// id: "banjo-brewing-fayetteville"
+// latitude: null
+// longitude: null
+// name: "Banjo Brewing"
+// phone: "3042164231"
+// postal_code: "25840"
+// state: "West Virginia"
+// street: null
+// updated_at: "2021-10-23T02:24:55.243Z"
+// website_url: null
+    function displayData(data){
+       data.forEach(ele => {
+           let postercard = document.createElement("div");
+           let name = document.createElement("p");
+           name.textContent = "name : " + ele.name;
+           let brewery_type = document.createElement("p");
+           brewery_type.textContent ="brewery_type : " +  ele.brewery_type;
+           let city = document.createElement("p");
+           city.textContent = "city : " + ele.city;
+           let state = document.createElement("p");
+           state.textContent = "State : "+ele.state;
+
+           postercard.append(name,brewery_type,city,state);
+           container1.append(postercard);
+
+       });
+        
+    }
+    
+    </script>
